@@ -1,0 +1,68 @@
+This is the language awesomeness API
+Call this api passing a language name and get back its features
+---
+tags:
+  - Modalities
+parameters:
+  - name: modalidade
+    in: query
+    type: string
+    required: true
+    description: The course modality
+  - name: data_inicio
+    in: query
+    type: date
+    required: true
+    description: Initial date (Y-m-d)
+  - name: data_fim
+    in: query
+    type: date
+    required: true
+    description: Final date (Y-m-d)
+definitions:
+  Modality:
+    type: object
+    properties:
+      campus:
+        type: string
+      curso:
+        type: string
+      data_inicio:
+        type: string
+        format: date-time
+        default: 2018-01-01T00:00:00.000Z
+      idade_ate_31_12_2016:
+        type: number
+      modalidade:
+        type: string
+      municipio:
+        type: string
+      nivel_do_curso:
+        type: string
+      nome:
+        type: string
+      ra:
+        type: number
+responses:
+  412:
+    description: Error on input data
+  500:
+    description: An generic error with an message of return
+  200:
+    description: Sucess return
+    schema:
+      properties:
+        code:
+          type: integer
+          description: Response code
+          default: 1
+        status:
+          type: string
+          description: Return status
+          default: success
+        data:
+          type: array
+          items:
+            $ref: '#/definitions/Modality'
+            
+              
