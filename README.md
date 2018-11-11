@@ -46,6 +46,12 @@ Instale as dependências do projeto
 pip3 install -r requirements.txt
 ```
 
+Exporte a variável de ambiente para o arquivo de configuração do ambiente que está executando o projeto
+
+```
+export APP_CONFIG_FILE=development.cfg
+```
+
 Rode a aplicação
 
 ```

@@ -7,7 +7,8 @@ from flask import jsonify
 from pymongo import MongoClient
 import sys
 
-app = Flask(__name__)
+app = Flask(__name__, instance_relative_config=True)
+app.config.from_envvar('APP_CONFIG_FILE')
 Swagger(app)
 
 @app.route("/")
@@ -31,15 +32,13 @@ def get_modalities():
             status_code = 412
 
         if status_code != 412:
-            client = MongoClient('142.44.178.41', 27017)
+            client = MongoClient(app.config['MONGO_HOST'], app.config['MONGO_PORT'])
             db = client.camilla
             collection = db.estudantes
 
             final_date = datetime.datetime.strptime(request.args['data_fim'], '%Y-%m-%d')
             initial_date = datetime.datetime.strptime(request.args['data_inicio'], '%Y-%m-%d')
 
-            print(final_date, file=sys.stderr)
-            print(initial_date, file=sys.stderr)
             modalities = collection.find(
                 {
                     "modalidade": request.args['modalidade'].upper(),

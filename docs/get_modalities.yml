@@ -1,5 +1,4 @@
-This is the language awesomeness API
-Call this api passing a language name and get back its features
+Method to get modalities from its name and initial/final dates
 ---
 tags:
   - Modalities
@@ -8,17 +7,19 @@ parameters:
     in: query
     type: string
     required: true
-    description: The course modality
+    description: Course modality
   - name: data_inicio
     in: query
     type: date
     required: true
-    description: Initial date (Y-m-d)
+    format: Y-m-d
+    description: Initial date
   - name: data_fim
     in: query
     type: date
     required: true
-    description: Final date (Y-m-d)
+    format: Y-m-d
+    description: Final date
 definitions:
   Modality:
     type: object
