@@ -45,7 +45,7 @@ definitions:
       ra:
         type: number
 responses:
-  412:
+  400:
     description: Error on input data
   500:
     description: An generic error with an message of return

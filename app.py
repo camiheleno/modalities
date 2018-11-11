@@ -23,18 +23,17 @@ def get_modalities():
         json_response = {}
         if 'modalidade' not in request.args:
             json_response = {'code': 2, 'status': 'error', 'message': 'No modality was informed.'}
-            status_code = 412
+            status_code = 400
         elif 'data_inicio' not in request.args: 
             json_response = {'code': 3, 'status': 'error', 'message': 'No inital date was informed.'}
-            status_code = 412
+            status_code = 400
         elif 'data_fim' not in request.args: 
             json_response = {'code': 4, 'status': 'error', 'message': 'No final date was informed.'}
-            status_code = 412
+            status_code = 400
 
-        if status_code != 412:
+        if status_code != 400:
             client = MongoClient(app.config['MONGO_HOST'], app.config['MONGO_PORT'])
-            db = client.camilla
-            collection = db.estudantes
+            collection = client.camilla.estudantes
 
             final_date = datetime.datetime.strptime(request.args['data_fim'], '%Y-%m-%d')
             initial_date = datetime.datetime.strptime(request.args['data_inicio'], '%Y-%m-%d')
@@ -57,5 +56,36 @@ def get_modalities():
     finally:
         return resp
         
+
+@app.route('/courses', methods = ['GET'])
+@swag_from('docs/get_courses.yml')
+def get_courses():
+    try:
+        status_code = 200
+        json_response = {}
+        if 'campus' not in request.args:
+            json_response = {'code': 5, 'status': 'error', 'message': 'No campus was informed.'}
+            status_code = 400
+
+        if status_code != 400:
+            client = MongoClient(app.config['MONGO_HOST'], app.config['MONGO_PORT'])
+            collection = client.camilla.estudantes
+
+            courses = collection.find(
+                {
+                    "campus": request.args['campus'].upper()
+                }
+            ).distinct("curso")
+
+            json_response = {'code': 1, 'status': 'success', 'data': list(courses)}
+
+        resp = jsonify(json_response)
+        resp.status_code = status_code
+    except Exception as e:
+        resp = jsonify({'code': 99, 'status': 'error', 'message': e})
+        resp.status_code = 500
+    finally:
+        return resp
+
 if __name__ == "__main__":
     app.run(debug=True)

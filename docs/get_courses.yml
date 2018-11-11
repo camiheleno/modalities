@@ -1,0 +1,36 @@
+Method to get courses from its campus
+---
+tags:
+  - Courses
+parameters:
+  - name: campus
+    in: query
+    type: string
+    required: true
+    description: Course campus
+definitions:
+  Courses:
+    type: string
+responses:
+  400:
+    description: Error on input data
+  500:
+    description: An generic error with an message of return
+  200:
+    description: Sucess return
+    schema:
+      properties:
+        code:
+          type: integer
+          description: Response code
+          default: 1
+        status:
+          type: string
+          description: Return status
+          default: success
+        data:
+          type: array
+          items:
+            $ref: '#/definitions/Courses'
+            
+              
