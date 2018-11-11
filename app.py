@@ -21,6 +21,7 @@ def get_modalities():
     try:
         status_code = 200
         json_response = {}
+
         if 'modalidade' not in request.args:
             json_response = {'code': 2, 'status': 'error', 'message': 'No modality was informed.'}
             status_code = 400
@@ -56,13 +57,13 @@ def get_modalities():
     finally:
         return resp
         
-
 @app.route('/courses', methods = ['GET'])
 @swag_from('docs/get_courses.yml')
 def get_courses():
     try:
         status_code = 200
         json_response = {}
+
         if 'campus' not in request.args:
             json_response = {'code': 5, 'status': 'error', 'message': 'No campus was informed.'}
             status_code = 400
@@ -78,6 +79,47 @@ def get_courses():
             ).distinct("curso")
 
             json_response = {'code': 1, 'status': 'success', 'data': list(courses)}
+
+        resp = jsonify(json_response)
+        resp.status_code = status_code
+    except Exception as e:
+        resp = jsonify({'code': 99, 'status': 'error', 'message': e})
+        resp.status_code = 500
+    finally:
+        return resp
+
+@app.route('/students/count', methods = ['GET'])
+@swag_from('docs/get_students_counter.yml')
+def get_students_counter():
+    try:
+        status_code = 200
+        json_response = {}
+
+        if 'data_inicio' not in request.args: 
+            json_response = {'code': 3, 'status': 'error', 'message': 'No inital date was informed.'}
+            status_code = 400
+        elif 'data_fim' not in request.args: 
+            json_response = {'code': 4, 'status': 'error', 'message': 'No final date was informed.'}
+            status_code = 400
+        elif 'campus' not in request.args:
+            json_response = {'code': 5, 'status': 'error', 'message': 'No campus was informed.'}
+            status_code = 400
+
+        if status_code != 400:
+            client = MongoClient(app.config['MONGO_HOST'], app.config['MONGO_PORT'])
+            collection = client.camilla.estudantes
+
+            final_date = datetime.datetime.strptime(request.args['data_fim'], '%Y-%m-%d')
+            initial_date = datetime.datetime.strptime(request.args['data_inicio'], '%Y-%m-%d')
+
+            students = collection.find(
+                {
+                    "campus": request.args['campus'].upper(),
+                    "data_inicio": {"$lte": final_date, "$gte": initial_date}
+                }
+            ).count()
+
+            json_response = {'code': 1, 'status': 'success', 'data': students}
 
         resp = jsonify(json_response)
         resp.status_code = status_code

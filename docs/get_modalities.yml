@@ -60,6 +60,7 @@ responses:
         status:
           type: string
           description: Return status
+          options: ["success", "error"]
           default: success
         data:
           type: array

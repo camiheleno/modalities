@@ -1,16 +1,25 @@
-Method to get courses from its campus
+Method to get the number of students from its campus and initial/final dates
 ---
 tags:
-  - Courses
+  - Students
 parameters:
   - name: campus
     in: query
     type: string
     required: true
-    description: Course campus
-definitions:
-  Courses:
-    type: string
+    description: Campus of the university
+  - name: data_inicio
+    in: query
+    type: date
+    required: true
+    format: Y-m-d
+    description: Initial date
+  - name: data_fim
+    in: query
+    type: date
+    required: true
+    format: Y-m-d
+    description: Final date
 responses:
   400:
     description: Error on input data
@@ -30,8 +39,8 @@ responses:
           options: ["success", "error"]
           default: success
         data:
-          type: array
-          items:
-            $ref: '#/definitions/Courses'
+          type: integer
+          description: Number of students of the campus
+          default: 0
             
               
