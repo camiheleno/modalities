@@ -8,11 +8,9 @@ Instruções para rodar o projeto em sua máquina.
 
 ### Pré-requisitos
 
-```
-[Python 3.6](https://www.python.org/downloads/release/python-367/)
-[Pip3](https://pip.pypa.io/en/stable/installing/)
-[Virtualenv](https://virtualenv.pypa.io/en/stable/userguide/#usage)
-```
+* [Python 3.6](https://www.python.org/downloads/release/python-367/)
+* [Pip3](https://pip.pypa.io/en/stable/installing/)
+* [Virtualenv](https://virtualenv.pypa.io/en/stable/userguide/#usage)
 
 ### Instalação
 
