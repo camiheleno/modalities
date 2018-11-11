@@ -19,7 +19,7 @@ Como deixar o projeto rodando em sua máquina.
 Clone o projeto em sua máquina
 
 ```
-git@github.com:camiheleno/modalities.git
+git clone git@github.com:camiheleno/modalities.git
 ```
 
 Acesse a pasta do projeto
