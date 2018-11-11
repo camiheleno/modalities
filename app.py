@@ -1,7 +1,6 @@
 import datetime
-from bson.json_util import dumps
 from flasgger import Swagger
-from flasgger.utils import swag_from, validate
+from flasgger.utils import swag_from
 from flask import Flask
 from flask import request
 from flask import jsonify
